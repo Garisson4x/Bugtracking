@@ -16,10 +16,26 @@
 
     // $pass = md5($pass,"dhyswoq213");
 
-    $mysql = new mysqli('localhost', 'root', '', 'mybugtracking');
-    $mysql->query("INSERT INTO `users` (`name`, `password`, `email`) VALUES ('$name', '$pass', '$email')");
+    $user = 'root';
+    $password = '';
+    $dbh = new PDO('mysql:host=localhost;dbname=mybugtracking',$user,$password);
 
-    $mysql->close();
+    $stmt = $dbh->prepare("SELECT * FROM users WHERE name = :name");
+    $stmt->bindParam(':name', $name);
+    $stmt->execute();
+    $user = $stmt->fetchall();
+    
+    if(count($user) == 0) {
+        $stmt = $dbh->prepare("INSERT INTO users (name, password, email) VALUES (:name, :pass, :email)");
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':pass', $pass);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+    } else {
+        echo "Такой пользователь уже существует";
+        exit();
+    }
+
 
     header('Location: /index.html');
 ?>

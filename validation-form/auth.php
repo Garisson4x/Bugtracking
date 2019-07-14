@@ -4,10 +4,16 @@
 
     // $pass = md5($pass,"dhyswoq213");
 
-    $mysql = new mysqli('localhost', 'root', '', 'mybugtracking');
+    $user = 'root';
+    $password = '';
+    $dbh = new PDO('mysql:host=localhost;dbname=mybugtracking',$user,$password);
 
-    $result = $mysql->query("SELECT * FROM `users` WHERE `name` = '$name' AND `password` = '$pass'");
-    $user = $result->fetch_assoc();
+    $stmt = $dbh->prepare("SELECT * FROM users WHERE name = :name AND password = :pass");
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':pass', $pass);
+    $stmt->execute();
+    $user = $stmt->fetchall();
+    
     if(count($user) == 0) {
         echo "Такой пользователь не найден";
         exit();
@@ -15,8 +21,5 @@
 
     session_start();
     $_SESSION["user"] = $name;
-
-    $mysql->close();
-
     header('Location: /list_task.php');
 ?>
