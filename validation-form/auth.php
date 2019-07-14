@@ -13,9 +13,10 @@
         exit();
     }
 
-    setcookie('user', $user['name'], time() + 3600, "/");
+    session_start();
+    $_SESSION["user"] = $name;
 
     $mysql->close();
 
-    header('Location: /list_task.html');
+    header('Location: /list_task.php');
 ?>

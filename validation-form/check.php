@@ -21,5 +21,5 @@
 
     $mysql->close();
 
-    header('Location: /list_task.html');
+    header('Location: /index.html');
 ?>
