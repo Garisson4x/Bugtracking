@@ -1,5 +1,5 @@
 <?php
-    $name = filter_var(trim($_POST['name']),FILTER_SANITIZE_STRING);
+    $login = filter_var(trim($_POST['login']),FILTER_SANITIZE_STRING);
     $pass = filter_var(trim($_POST['pass']),FILTER_SANITIZE_STRING);
     $email = filter_var(trim($_POST['email']),FILTER_SANITIZE_STRING);
 
@@ -15,19 +15,20 @@
     // }
 
     // $pass = md5($pass,"dhyswoq213");
+    // $pass = password_hash($pass, PASSWORD_BCRYPT);
 
     $user = 'root';
     $password = '';
-    $dbh = new PDO('mysql:host=localhost;dbname=mybugtracking',$user,$password);
+    $dbh = new PDO('mysql:host=localhost;dbname=BugTracking',$user,$password);
 
-    $stmt = $dbh->prepare("SELECT * FROM users WHERE name = :name");
-    $stmt->bindParam(':name', $name);
+    $stmt = $dbh->prepare("SELECT * FROM users WHERE login = :login");
+    $stmt->bindParam(':login', $login);
     $stmt->execute();
     $user = $stmt->fetchall();
-    
+
     if(count($user) == 0) {
-        $stmt = $dbh->prepare("INSERT INTO users (name, password, email) VALUES (:name, :pass, :email)");
-        $stmt->bindParam(':name', $name);
+        $stmt = $dbh->prepare("INSERT INTO users (login, password, email) VALUES (:login, :pass, :email)");
+        $stmt->bindParam(':login', $login);
         $stmt->bindParam(':pass', $pass);
         $stmt->bindParam(':email', $email);
         $stmt->execute();

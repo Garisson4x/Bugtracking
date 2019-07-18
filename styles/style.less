@@ -1,10 +1,13 @@
+// * {padding: 0; margin: 0};
+
 body {
     background: grey;
     .meeting {
         margin: 15%;
         align-items: center;
         background: #fd0;
-        padding: 10px;
+        border-radius: 15px;
+        padding: 20px;
         margin-left: auto;
         margin-right: auto;
         width: 245px;
@@ -12,7 +15,8 @@ body {
     .list {
         margin-top: 20px;
         background: #fd0;
-        padding: 10px;
+        border-radius: 15px;
+        padding: 30px;
         margin-left: auto;
         margin-right: auto;
         width: 1300px;
@@ -24,5 +28,25 @@ header {
     .quit{
         margin-left: auto;
         padding: 30px;
+    }
+}
+
+table {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    width: 600px;
+    tr, td {
+        border: 1px solid grey;
+        padding: 10px 15px;
+    }
+    tr {
+        width: 20%;
+    }
+    td:first-child {
+        width: 10px;
+    }
+    td:last-child {
+        width: 40%;
+        text-align: center;
     }
 }
