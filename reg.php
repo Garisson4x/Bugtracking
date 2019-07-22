@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title>Bugtracking</title>
-        <link rel="stylesheet/less" type="text/css" href="styles/style.less" />
-        <script src="js/less.min.js" type="text/javascript"></script>
-    </head>
+<?= include 'validation/head.php' ?>
     <body>
         <div class="meeting">
             <h1>Регистрация</h1>
-            <form action="validation-form/check.php" method="post">
+            <form action="validation/check.php" method="post">
                 <input type="text" name="login" required placeholder="Login" /><br/>
                 <input type="password" name="pass" required placeholder="password" /><br/>
                 <input type="email" name="email" required placeholder="email" /><br/>

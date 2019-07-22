@@ -7,9 +7,7 @@
     //     header('Location: /projects.php');
     // }
 
-    $user = 'root';
-    $password = '';
-    $dbh = new PDO('mysql:host=localhost;dbname=BugTracking',$user,$password);
+    include '_connect.php';
 
     $stmt = $dbh->prepare("SELECT * FROM users WHERE login = :login");
     $stmt->bindParam(':login', $login);
@@ -33,5 +31,10 @@
 
     session_start();
     $_SESSION["user"] = $login;
+    $stmt = $dbh->prepare("SELECT * FROM users WHERE login = :login;");
+    $stmt->bindParam(':login', $login);
+    $stmt->execute();
+    $user = $stmt->fetchObject();
+    $_SESSION["user_obj"] = $user;
     header('Location: /projects.php');
 ?>

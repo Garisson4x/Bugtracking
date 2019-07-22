@@ -1,46 +1,71 @@
-<!DOCTYPE html>
 <?php
-session_start();
-if (!isset($_SESSION["user"])) {
-    header('Location: /index.html');
-}
+include 'validation/_session.php';
+include 'validation/head.php';
 ?>
-<html lang="en" dir="ltr">
-    <head>
-        <link rel="stylesheet/less" type="text/css" href="styles/style.less" />
-        <script src="js/less.min.js" type="text/javascript"></script>
-        <meta charset="utf-8">
-        <title>Bugtracking</title>
-    </head>
     <body>
-        <header>
-            <div class="logo">
-                <h1>Bugtracking</h1>
-            </div>
-            <div class="quit">
-                <?php
-                echo $_SESSION["user"];
-                ?>
-                <a href='validation-form/quit.php'> Выйти </a>
-            </div>
-        </header>
+    <?= include 'validation/header.php' ?>
         <main>
             <div class="list">
                 <h1>The details</h1>
                 <?php
-                $user = 'root';
-                $password = '';
-                $dbh = new PDO('mysql:host=localhost;dbname=BugTracking',$user,$password);
-                $id=$_GET['id'];
-                $stmt = $dbh->prepare("SELECT * FROM projects WHERE id= :id;");
+                include 'validation/_connect.php';
+                $id = $_GET['id'];
+                $stmt = $dbh->prepare("SELECT projects.id, projects.title, users.login as creator
+                                       FROM projects
+                                       INNER JOIN users ON projects.creator_id = users.id
+                                       WHERE projects.id = :id;");
                 $stmt->bindParam(':id', $id);
                 $stmt->execute();
-                while($row = $stmt->fetchObject()){
-                    echo '<p>name: ' .$row->title. '</p>';
-                    echo '<p>creater: ' .$row->created. '</p>';
-                }
+                while($project = $stmt->fetchObject()):
+                $project_id = $project->id;
+                $_SESSION['project_id'] = $project_id
                 ?>
+                    <p>Id: <?= $project->id ?></p>
+                    <p>Name: <?= $project->title ?></p>
+                    <p>Creator: <?= $project->creator ?></p>
+                <?php endwhile ?>
                 <h2>tickets</h2>
+                <table>
+                    <?php
+                        include 'validation/_connect.php';
+                        $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.title, tickets.type,
+                                                      tickets.status, tickets.assigned, tickets.description, users.login as creator
+                                               FROM tickets
+                                               INNER JOIN users ON tickets.creator_id = users.id
+                                               WHERE tickets.project_id = :project_id;");
+                        $stmt->bindParam(':project_id', $project_id);
+                        $stmt->execute();
+                    ?>
+                    <tr>
+                        <td>Id</td>
+                        <td>Type</td>
+                        <td>Title</td>
+                        <td>Status</td>
+                        <td>Creator</td>
+                        <td>Assigned</td>
+                        <td>Description</td>
+                        <td>File</td>
+                        <td>Action</td>
+                    </tr>
+                    <?php while($ticket = $stmt->fetchObject()): ?>
+                    <tr>
+                        <td><?= $ticket->id ?></td>
+                        <td><?= $ticket->type ?></td>
+                        <td><?= $ticket->title ?></td>
+                        <td><?= $ticket->status ?></td>
+                        <td><?= $ticket->creator ?></td>
+                        <td><?= $ticket->assigned ?></td>
+                        <td><?= $ticket->description ?></td>
+                        <td><?= $ticket->file ?></td>
+                        <td>
+                            <a href="ticket.php?id=<?= $ticket->id ?>">Show</a>
+                            <a href="edit_ticket.php?id=<?= $ticket->id ?>">Edit</a>
+                            <a href="validation/delete_ticket.php?id=<?= $ticket->id ?>">Delete</a>
+                        </td>
+                    </tr>
+                    <?php endwhile ?>
+                </table></br>
+                <a href="new_ticket.php?id=<?=$project_id?>">Создать тикет</a>
                 </div>
         </main>
     </body>

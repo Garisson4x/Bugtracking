@@ -3,23 +3,10 @@
     $pass = filter_var(trim($_POST['pass']),FILTER_SANITIZE_STRING);
     $email = filter_var(trim($_POST['email']),FILTER_SANITIZE_STRING);
 
-    // if(mb_strlen($name) < 3 || mb_strlen($name) > 50) {
-    //     echo "Недопустимая длина логина";
-    //     exit();
-    // } else if(mb_strlen($pass) < 2 || mb_strlen($pass) > 6){
-    //     echo "Недопустимая длина пароля (от 2 до 6 символов)";
-    //     exit();
-    // } else if(mb_strlen($email) < 8 || mb_strlen($email) > 50){
-    //     echo "Недопустимая длина почты";
-    //     exit();
-    // }
-
     // $pass = md5($pass,"dhyswoq213");
     // $pass = password_hash($pass, PASSWORD_BCRYPT);
 
-    $user = 'root';
-    $password = '';
-    $dbh = new PDO('mysql:host=localhost;dbname=BugTracking',$user,$password);
+    include '_connect.php';
 
     $stmt = $dbh->prepare("SELECT * FROM users WHERE login = :login");
     $stmt->bindParam(':login', $login);
@@ -36,7 +23,6 @@
         echo "Такой пользователь уже существует";
         exit();
     }
-
 
     header('Location: /index.html');
 ?>
