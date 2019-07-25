@@ -4,7 +4,7 @@ session_start();
     $id = $_GET['id'];
     $project_id = $_SESSION['project_id'];
     include '_connect.php';
-    $stmt = $dbh->prepare("UPDATE tickets SET title = :title, creator_id = :creator_id, type = :type, project_id = :project_id, status = :status, description = :description, assigned = :assigned WHERE id = :id;");
+    $stmt = $dbh->prepare("UPDATE tickets SET title = :title, creator_id = :creator_id, type = :type, project_id = :project_id, status = :status, description = :description, assigned_id = :assigned WHERE id = :id;");
     $stmt->bindParam(':title', $title);
     $stmt->bindParam(':creator_id', $_SESSION["user_obj"]->id);
     $stmt->bindParam(':type', $_POST["type"]);

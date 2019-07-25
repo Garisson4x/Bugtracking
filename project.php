@@ -3,7 +3,7 @@ include 'validation/_session.php';
 include 'validation/head.php';
 ?>
     <body>
-    <?= include 'validation/header.php' ?>
+    <?php include 'validation/header.php' ?>
         <main>
             <div class="list">
                 <h1>The details</h1>
@@ -29,7 +29,7 @@ include 'validation/head.php';
                     <?php
                         include 'validation/_connect.php';
                         $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.title, tickets.type,
-                                                      tickets.status, tickets.assigned, tickets.description, users.login as creator
+                                                      tickets.status, tickets.assigned_id, tickets.description, tickets.file, users.login as creator
                                                FROM tickets
                                                INNER JOIN users ON tickets.creator_id = users.id
                                                WHERE tickets.project_id = :project_id;");
@@ -54,7 +54,7 @@ include 'validation/head.php';
                         <td><?= $ticket->title ?></td>
                         <td><?= $ticket->status ?></td>
                         <td><?= $ticket->creator ?></td>
-                        <td><?= $ticket->assigned ?></td>
+                        <td><?= $ticket->assigned_id ?></td>
                         <td><?= $ticket->description ?></td>
                         <td><?= $ticket->file ?></td>
                         <td>

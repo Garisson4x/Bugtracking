@@ -4,7 +4,7 @@ include 'validation/head.php';
 ?>
     <body>
         <div class="container">
-        <?= include 'validation/header.php' ?>
+        <?php include 'validation/header.php' ?>
             <main>
                 <div class="list">
                     <h1>Projects</h1>

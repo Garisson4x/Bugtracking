@@ -1,12 +1,20 @@
 <?php
 include 'validation/_session.php';
 include 'validation/head.php';
+include 'validation/_connect.php';
 ?>
     <body>
         <div class="meeting">
             <h3>Изменить тикет</h3>
             <form action="validation/to_edit_ticket.php?id=<?=$_GET['id']?>" method="post">
-                <input type="text" name="title" required placeholder="Введите название" /><br/>
+                <?php
+                $id = $_GET['id'];
+                $stmt = $dbh->prepare("SELECT * from tickets where id = :id");
+                $stmt->bindParam(':id', $id);
+                $stmt->execute();
+                $ticket = $stmt->fetchObject();
+                ?>
+                <input type="text" name="title" required value="<?=$ticket->title?>" /><br/>
                 <select type="text" name="type" required>
                     <option disabled>Выберите тип</option>
                     <option>bug</option>
@@ -20,19 +28,18 @@ include 'validation/head.php';
                     <option>done</option>
                 </select>
                 <?php
-                    include 'validation/_connect.php';
-                    $stmt = $dbh->prepare("SELECT login from users");
+                    $stmt = $dbh->prepare("SELECT * from users");
                     $stmt->execute();
                 ?>
                 <select type="text" name="assigned" required>
                     <option disabled>Выберите человека</option>
                     <?php while($users = $stmt->fetchObject()): ?>
-                    <option><?=$users->login?></option>
+                    <option value="<?=$users->id?>"><?=$users->login?></option>
                     <?php endwhile ?>
                 </select>
 
                 <p>Описание</p>
-                    <textarea type="text" name="description" cols="33" rows="6"></textarea>
+                    <textarea type="text" name="description" cols="33" rows="6" value="<?=$ticket->description?>"></textarea>
                 <p>Прикрепить файл</p>
                     <input name="file" type="file">
                 <button type="submit">Изменить</button><br/>
