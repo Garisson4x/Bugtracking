@@ -28,7 +28,7 @@ include 'validation/head.php';
                 <table>
                     <?php
                         include 'validation/_connect.php';
-                        $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.title, tickets.type,
+                        $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.title, tickets.file_name, tickets.type,
                                                       tickets.status, tickets.assigned_id, tickets.description, tickets.file, users.login as creator
                                                FROM tickets
                                                INNER JOIN users ON tickets.creator_id = users.id
@@ -56,7 +56,7 @@ include 'validation/head.php';
                         <td><?= $ticket->creator ?></td>
                         <td><?= $ticket->assigned_id ?></td>
                         <td><?= $ticket->description ?></td>
-                        <td><?= $ticket->file ?></td>
+                        <td><a href="<?= $ticket->file ?>"><?= $ticket->file_name ?></a></td>
                         <td>
                             <a href="ticket.php?id=<?= $ticket->id ?>">Show</a>
                             <a href="edit_ticket.php?id=<?= $ticket->id ?>">Edit</a>
