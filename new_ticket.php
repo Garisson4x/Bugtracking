@@ -4,7 +4,7 @@ include 'validation/head.php';
 ?>
     <body>
         <div class="meeting">
-            <h3>Новый тикет</h3>
+            <p class="glav">Новый тикет</p>
             <form action="validation/to_create_ticket.php?id=<?=$_GET['id']?>" method="post" enctype="multipart/form-data">
                 <input type="text" name="title" required placeholder="Введите название" /><br/>
                 <select type="text" name="type" required>
@@ -35,7 +35,9 @@ include 'validation/head.php';
                     <textarea type="text" name="description" cols="33" rows="6"></textarea>
                 <p>Прикрепить файл</p>
                     <input name="file" type="file">
-                <button type="submit">Добавить</button><br/>
+                <div>
+                    <button class="enter" type="submit">Добавить</button>
+                </div>
             </form>
         </div>
     </body>

@@ -4,10 +4,12 @@ include 'validation/head.php';
 ?>
     <body>
         <div class="meeting">
-            <h3>Переименовать проект</h3>
+            <p class="glav">Переименовать проект</p>
             <form action="validation/edit.php?id=<?=$_GET['id']?>" method="post">
                 <input type="text" name="title" required placeholder="Новое название" /><br/>
-                <button type="submit">Изменить</button><br/>
+                <div>
+                    <button class="enter" type="submit">Изменить</button>
+                </div>
             </form>
         </div>
     </body>

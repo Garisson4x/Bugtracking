@@ -5,7 +5,7 @@ include 'validation/_connect.php';
 ?>
     <body>
         <div class="meeting">
-            <h3>Изменить тикет</h3>
+            <p class="glav">Изменить тикет</p>
             <form action="validation/to_edit_ticket.php?id=<?=$_GET['id']?>" method="post">
                 <?php
                 $id = $_GET['id'];

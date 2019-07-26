@@ -4,10 +4,12 @@ include 'validation/head.php';
 ?>
     <body>
         <div class="meeting">
-            <h3>Новый проект</h3>
+            <p class="glav">Новый проект</p>
             <form action="validation/to_create.php" method="post">
                 <input type="text" name="title" required placeholder="Введите название" /><br/>
-                <button type="submit">Добавить</button><br/>
+            <div>
+                <button class="enter" type="submit">Добавить</button>
+            </div>
             </form>
         </div>
     </body>
