@@ -10,10 +10,11 @@ include 'validation/head.php';
                     <?php
                     include 'validation/_connect.php';
                     $id = $_GET['id'];
-                    $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.title, tickets.type,
-                                                  tickets.status, tickets.assigned_id, tickets.description, tickets.file, users.login as creator
+                    $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.title, tickets.file_name, tickets.type, tickets.assigned_id,
+                                                  tickets.status, users_as.login as assigned, tickets.description, tickets.file, users.login as creator
                                            FROM tickets
                                            INNER JOIN users ON tickets.creator_id = users.id
+                                           INNER JOIN users AS users_as ON tickets.assigned_id = users_as.id
                                            WHERE tickets.id = :id;");
                     $stmt->bindParam(':id', $id);
                     $stmt->execute();
@@ -25,7 +26,7 @@ include 'validation/head.php';
                         <p>Title: <?= $ticket->title ?></p>
                         <p>Status: <?= $ticket->status ?></p>
                         <p>Creator: <?= $ticket->creator ?></p>
-                        <p>Assigned: <?= $ticket->assigned_id ?></p>
+                        <p>Assigned: <?= $ticket->assigned ?></p>
                         <p>Description: <?= $ticket->description ?></p>
                         <p>File: <?= $ticket->file ?></p>
                     <?php endwhile ?>
