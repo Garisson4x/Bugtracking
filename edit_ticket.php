@@ -39,7 +39,7 @@ include 'validation/_connect.php';
                 </select>
 
                 <p>Описание</p>
-                    <textarea type="text" name="description" cols="33" rows="6" value="<?=$ticket->description?>"></textarea>
+                    <textarea type="text" name="description" cols="33" rows="6" ><?=$ticket->description?></textarea>
                 <p>Прикрепить файл</p>
                     <input name="file" type="file">
                 <button type="submit">Изменить</button><br/>

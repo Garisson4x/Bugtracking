@@ -31,22 +31,18 @@ include 'validation/head.php';
                         <p>File: <?= $ticket->file ?></p>
                     <?php endwhile ?>
                     <?php
-                    $stmt = $dbh->prepare("SELECT relation.ticket_id, tags.word FROM relation
+                    $stmt = $dbh->prepare("SELECT relation.ticket_id, tags.word, tags.id FROM relation
                                            INNER JOIN tags ON relation.tag_id = tags.id
                                            WHERE relation.ticket_id = :id;");
                     $stmt->bindParam(':id', $id);
                     $stmt->execute();
                     ?>
-                    <?php while($tag = $stmt->fetchObject()):?>
-                    <?=$tag->word?>
-                    <?php endwhile ?>
-                    <?php
-                    $stmt = $dbh->prepare("SELECT * FROM tags re
-                                           INNER JOIN users ON comments.creator_id = users.id
-                                           WHERE comments.ticket_id = :id;");
-                    $stmt->bindParam(':id', $id);
-                    $stmt->execute();
+                    <?php while($tag = $stmt->fetchObject()):
+                    $tag_id = $tag->id;
                     ?>
+                    <?=$tag->word?>
+                    <a href="validation/delete_tags.php?id=<?=$tag_id?>&ticket_id=<?=$ticket_id?>">&#10006;</a>
+                    <?php endwhile ?>
                     <form action="validation/add_tags.php?id=<?=$id?>" method="post">
                         <label for="tags">Tags</label>
                         <input type="text" name="tags" id="tags">
@@ -57,12 +53,13 @@ include 'validation/head.php';
                     $stmt = $dbh->prepare("SELECT comments.id, comments.context, users.login as creator
                                            FROM comments
                                            INNER JOIN users ON comments.creator_id = users.id
-                                           WHERE comments.ticket_id = :id;");
+                                           WHERE comments.ticket_id = :id
+                                           ORDER BY updated_at DESC;");
                     $stmt->bindParam(':id', $id);
                     $stmt->execute();
                     while($comment = $stmt->fetchObject()):
                     ?>
-                    <p>user: <?= $comment->creator ?></p>
+                    <p>User: <?= $comment->creator ?></p>
                     <p> <?= $comment->context ?></p>
                     <a href="validation/delete_comment.php?id=<?=$comment->id?>&ticket_id=<?=$ticket_id?>">Удалить комментарий</a>
                     <?php endwhile ?>
