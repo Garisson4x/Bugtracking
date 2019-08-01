@@ -6,7 +6,7 @@ include 'validation/_connect.php';
     <body>
         <div class="meeting">
             <p class="glav">Изменить тикет</p>
-            <form action="validation/to_edit_ticket.php?id=<?=$_GET['id']?>" method="post">
+            <form action="validation/to_edit_ticket.php?id=<?=$_GET['id']?>" method="post" enctype="multipart/form-data">
                 <?php
                 $id = $_GET['id'];
                 $stmt = $dbh->prepare("SELECT * from tickets where id = :id");
@@ -17,15 +17,15 @@ include 'validation/_connect.php';
                 <input type="text" name="title" required value="<?=$ticket->title?>" /><br/>
                 <select type="text" name="type" required>
                     <option disabled>Выберите тип</option>
-                    <option>bug</option>
-                    <option>task</option>
-                </select>
+                    <option <?php if ($ticket->type == 'bug'): ?>selected="true"<?php endif; ?>>bug</option>
+                    <option <?php if ($ticket->type == 'task'): ?>selected="true"<?php endif; ?>>task</option>
+                </select></br>
                 <select type="text" name="status" required>
                     <option disabled>Выберите статус</option>
-                    <option>new</option>
-                    <option>in progress</option>
-                    <option>testing</option>
-                    <option>done</option>
+                    <option <?php if ($ticket->status == 'new'): ?>selected="true"<?php endif; ?>>new</option>
+                    <option <?php if ($ticket->status == 'in progress'): ?>selected="true"<?php endif; ?>>in progress</option>
+                    <option <?php if ($ticket->status == 'testing'): ?>selected="true"<?php endif; ?>>testing</option>
+                    <option <?php if ($ticket->status == 'done'): ?>selected="true"<?php endif; ?>>done</option>
                 </select>
                 <?php
                     $stmt = $dbh->prepare("SELECT * from users");

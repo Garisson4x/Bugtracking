@@ -28,7 +28,7 @@ include 'validation/head.php';
                 <table>
                     <?php
                         include 'validation/_connect.php';
-                        $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.title, tickets.file_name, tickets.type, tickets.assigned_id,
+                        $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.creator_id, tickets.title, tickets.file_name, tickets.type, tickets.assigned_id,
                                                       tickets.status, users_as.login as assigned, tickets.description, tickets.file, users.login as creator
                                                FROM tickets
                                                INNER JOIN users ON tickets.creator_id = users.id
@@ -58,11 +58,13 @@ include 'validation/head.php';
                         <td><?= $ticket->creator ?></td>
                         <td><a href="assigned_task.php?id=<?= $ticket->assigned_id ?>"><?= $ticket->assigned ?></a></td>
                         <td><?= $ticket->description ?></td>
-                        <td><a href="<?= $ticket->file ?>"><?= $ticket->file_name ?></a></td>
+                        <td><a href="/validation/<?= $ticket->file ?>"><?= $ticket->file_name ?></a></td>
                         <td>
                             <a href="ticket.php?id=<?= $ticket->id ?>">Show</a>
+                            <?php if (is_allowed($ticket->creator_id)): ?>
                             <a href="edit_ticket.php?id=<?= $ticket->id ?>">Edit</a>
                             <a href="validation/delete_ticket.php?id=<?= $ticket->id ?>">Delete</a>
+                            <?php endif ?>
                         </td>
                     </tr>
                     <?php endwhile ?>

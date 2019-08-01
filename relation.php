@@ -7,18 +7,19 @@ include 'validation/head.php';
         <?php include 'validation/header.php' ?>
             <main>
                 <div class="list">
-                    <h1>Assigned task</h1>
+                    <h1>Relation</h1>
                     <table>
                         <?php
                             include 'validation/_connect.php';
                             $id = $_GET['id'];
-                            $stmt = $dbh->prepare("SELECT tickets.id, tickets.project_id, tickets.creator_id, tickets.title,
+                            $stmt = $dbh->prepare("SELECT tickets.id, relation.ticket_id, relation.tag_id, tickets.project_id, tickets.creator_id, tickets.title,
                                                           tickets.file_name, tickets.type, tickets.assigned_id, tickets.status,
                                                           users_as.login as assigned, tickets.description, tickets.file, users.login as creator
                                                    FROM tickets
+                                                   INNER JOIN relation ON tickets.id = relation.ticket_id
                                                    INNER JOIN users ON tickets.creator_id = users.id
                                                    INNER JOIN users AS users_as ON tickets.assigned_id = users_as.id
-                                                   WHERE tickets.assigned_id = :id
+                                                   WHERE relation.tag_id = :id
                                                    ORDER BY updated_at DESC;");
                             $stmt->bindParam(':id', $id);
                             $stmt->execute();

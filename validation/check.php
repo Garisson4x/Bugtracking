@@ -3,8 +3,7 @@
     $pass = filter_var(trim($_POST['pass']),FILTER_SANITIZE_STRING);
     $email = filter_var(trim($_POST['email']),FILTER_SANITIZE_STRING);
 
-    // $pass = md5($pass,"dhyswoq213");
-    // $pass = password_hash($pass, PASSWORD_BCRYPT);
+    $pass = password_hash($_POST['pass'], PASSWORD_BCRYPT);
 
     include '_connect.php';
 

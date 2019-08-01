@@ -2,11 +2,6 @@
     $login = filter_var(trim($_POST['login']),FILTER_SANITIZE_STRING);
     $pass = filter_var(trim($_POST['pass']),FILTER_SANITIZE_STRING);
 
-    // $pass = md5($pass,"dhyswoq213");
-    // if(!password_verify($pass, $user->password)){
-    //     header('Location: /projects.php');
-    // }
-
     include '_connect.php';
 
     $stmt = $dbh->prepare("SELECT * FROM users WHERE login = :login");
@@ -18,12 +13,13 @@
         echo "Такой пользователь не найден";
         exit();
     } else {
-        $stmt = $dbh->prepare("SELECT * FROM users WHERE password = :pass");
-        $stmt->bindParam(':pass', $pass);
+        $stmt = $dbh->prepare("SELECT password FROM users where login = :login");
+        $stmt->bindParam(':login', $login);
         $stmt->execute();
-        $pass = $stmt->fetchall();
+        $password = $stmt->fetchObject();
+        $hash = $password->password;
 
-        if(count($pass) == 0) {
+        if (!password_verify($pass, $hash) || count($pass) == 0) {
             echo "Пароль не подходит";
             exit();
         }

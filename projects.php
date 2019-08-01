@@ -11,7 +11,7 @@ include 'validation/head.php';
                     <table>
                         <?php
                             include 'validation/_connect.php';
-                            $stmt = $dbh->prepare("SELECT projects.id, projects.title, users.login as creator
+                            $stmt = $dbh->prepare("SELECT projects.id, projects.creator_id, projects.title, users.login as creator
                                                    FROM projects
                                                    INNER JOIN users ON projects.creator_id = users.id;");
                             $stmt->execute();
@@ -29,8 +29,10 @@ include 'validation/head.php';
                             <td><?= $project->creator ?></td>
                             <td>
                                 <a href="project.php?id=<?= $project->id ?>">Show</a>
+                                <?php if (is_allowed($project->creator_id)): ?>
                                 <a href="edit_project.php?id=<?= $project->id ?>">Edit</a>
                                 <a href="validation/delete.php?id=<?= $project->id ?>">Delete</a>
+                                <?php endif ?>
                             </td>
                         </tr>
                         <?php endwhile ?>
